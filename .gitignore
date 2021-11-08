@@ -17,6 +17,9 @@ __pycache__/
 # Research folders
 ytTEST/
 
+# FFmpeg folder
+FFmpeg/
+
 # Distribution / packaging
 .Python
 build/

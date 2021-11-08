@@ -9,15 +9,14 @@ import quotesAPI
 import nasa
 import YTfuncs
 
-
-
 client = discord.Client()
 load_dotenv()
 prefix = os.environ['prefix']
 global vc
 
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-FFMPEG_SOURCE = os.environ['ffmpeg_source']
+FFMPEG_SOURCE = os.environ['ffmpeg_source'] + 'ffmpeg.exe'
+
 
 @client.event
 async def on_ready():
@@ -55,9 +54,10 @@ async def on_message(message):
         else:
             globals()['prefix'] = result_prefix
             dotenv.set_key(".env", 'prefix', result_prefix)
+            await message.channel.send("Prefix changed to {0}".format(result_prefix))
             print(f"Prefix changed to {result_prefix}")
 
-    # Player
+    # Music Player
     if message.content.startswith(prefix + 'play'):
         link = message.content.replace((prefix + 'play '), '')
         global vc
@@ -68,16 +68,13 @@ async def on_message(message):
             print("ERROR " + f" {e}")
         if vc.is_playing:
             vc.stop()
-
         if validators.url(link):
             audio_link: str = YTfuncs.extract_song_url(link)
-            vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_SOURCE,source=audio_link, **FFMPEG_OPTIONS))
-
-        while vc.is_playing():
+            vc.play(discord.FFmpegPCMAudio(executable=FFMPEG_SOURCE, source=audio_link, **FFMPEG_OPTIONS))
+        while vc.is_playing():  # because of AFK
             await sleep(60)
         if not vc.is_paused():
-            await vc.disconnect()
-
+            await vc.disconnect(force=False)
 
 
 if __name__ == "__main__":
