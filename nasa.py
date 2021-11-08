@@ -4,10 +4,10 @@ import json
 
 
 class Celestial:
-    def __init__(self, name, description, picture):
-        self.name = name
-        self.description = description
-        self.picture = picture
+    def __init__(self, name, description, media):
+        self.name: str = name
+        self.description: str = description
+        self.picture: str = media
 
     def get_name(self):
         return self.name
@@ -16,7 +16,7 @@ class Celestial:
         useless_index = self.description.find("APOD in world languages")
         result_description = self.description
 
-        if useless_index != -1:  # Deletes useless info about other langs if such exists
+        if useless_index != -1:  # Deletes useless info about other languages if such exists
             result_description = self.description[:useless_index]
         return result_description
 

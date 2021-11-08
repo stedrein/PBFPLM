@@ -11,8 +11,11 @@ __pycache__/
 # C extensions
 *.so
 
-#IDEA information
+# IDEA information
 .idea
+
+# Research folders
+ytTEST/
 
 # Distribution / packaging
 .Python
